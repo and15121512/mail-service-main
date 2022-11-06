@@ -1,0 +1,296 @@
+{
+	"info": {
+		"_postman_id": "a59ae984-0c87-486e-bec6-a8f23e1f07a9",
+		"name": "Mail Service API",
+		"description": "This is a simple auth server.\n\nContact Support:\n Name: API Support\n Email: support@swagger.io",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "login",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "qwerty",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "test123",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "localhost:3001/login",
+							"host": [
+								"localhost"
+							],
+							"port": "3001",
+							"path": [
+								"login"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Task",
+			"item": [
+				{
+					"name": "create task",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let responseData=pm.response.json();",
+									"console.log(responseData);",
+									"pm.collectionVariables.set(\"taskId\", responseData.task_id);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"logins\": [ \"MyLogin1\", \"MyLogin2\", \"MyLogin3\", \"MyLogin4\" ],\n\t\"title\": \"MyTask1\",\n\t\"description\": \"This task is important one!\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3002/tasks",
+							"host": [
+								"localhost"
+							],
+							"port": "3002",
+							"path": [
+								"tasks"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get task",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:3002/tasks/{{taskId}}",
+							"host": [
+								"localhost"
+							],
+							"port": "3002",
+							"path": [
+								"tasks",
+								"{{taskId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "approve",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "localhost:3002/tasks/{{taskId}}/approve?token=1f5dc76a2f6353dd04baecdd7c0f23abf1ecb40b&decision=approve",
+							"host": [
+								"localhost"
+							],
+							"port": "3002",
+							"path": [
+								"tasks",
+								"{{taskId}}",
+								"approve"
+							],
+							"query": [
+								{
+									"key": "token",
+									"value": "1f5dc76a2f6353dd04baecdd7c0f23abf1ecb40b"
+								},
+								{
+									"key": "decision",
+									"value": "approve"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "decline",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "localhost:3002/tasks/{{taskId}}/approve?token=12119db89eea2a9c47fc33cb6303e89c0f7bb963&decision=decline",
+							"host": [
+								"localhost"
+							],
+							"port": "3002",
+							"path": [
+								"tasks",
+								"{{taskId}}",
+								"approve"
+							],
+							"query": [
+								{
+									"key": "token",
+									"value": "12119db89eea2a9c47fc33cb6303e89c0f7bb963"
+								},
+								{
+									"key": "decision",
+									"value": "decline"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete task",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "localhost:3002/tasks/{{taskId}}",
+							"host": [
+								"localhost"
+							],
+							"port": "3002",
+							"path": [
+								"tasks",
+								"{{taskId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update task",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"logins\": [ \"MyLogin1\", \"MyLogin2\", \"MyLogin3\", \"MyLogin4\" ],\n\t\"title\": \"MyTask1\",\n\t\"description\": \"This task was updated!\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3002/tasks/{{taskId}}",
+							"host": [
+								"localhost"
+							],
+							"port": "3002",
+							"path": [
+								"tasks",
+								"{{taskId}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Analytics",
+			"item": [
+				{
+					"name": "report",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"task_id\": \"{{taskId}}\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3003/report",
+							"host": [
+								"localhost"
+							],
+							"port": "3003",
+							"path": [
+								"report"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"auth": {
+		"type": "basic",
+		"basic": [
+			{
+				"key": "password",
+				"value": "{{password}}",
+				"type": "string"
+			},
+			{
+				"key": "username",
+				"value": "{{login}}",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "taskId",
+			"value": "",
+			"type": "default"
+		}
+	]
+}
